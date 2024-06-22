@@ -99,3 +99,172 @@ export const plataformasUsuario = async (req, res) => {
       res.status(500).json({ error: 'Error al obtener las plataformas del usuario' });
     }
   };
+
+  export const agregarFavorita = async (req, res) => {
+    const { nom_usuario, pelicula_id } = req.body;
+  
+    // Validar que los campos necesarios estén presentes
+    if (!nom_usuario || !pelicula_id) {
+      return res.status(400).json({ error: 'El nombre de usuario y el ID de la película son requeridos' });
+    }
+  
+    try {
+      // Obtener una conexión de la pool
+      const connection = await pool.promise().getConnection();
+  
+      // Consulta para insertar la película favorita
+      const query = 'INSERT INTO usuario_favoritas (nom_usuario, pelicula_id) VALUES (?, ?)';
+      await connection.execute(query, [nom_usuario, pelicula_id]);
+  
+      // Liberar la conexión
+      connection.release();
+  
+      // Enviar una respuesta exitosa
+      res.status(201).json({ message: 'Película favorita agregada exitosamente' });
+    } catch (error) {
+      console.error('Error agregando película favorita:', error);
+      res.status(500).json({ error: 'Error al agregar la película favorita' });
+    }
+  };
+
+  export const agregarPendiente = async (req, res) => {
+    const { nom_usuario, pelicula_id } = req.body;
+  
+    // Validar que los campos necesarios estén presentes
+    if (!nom_usuario || !pelicula_id) {
+      return res.status(400).json({ error: 'El nombre de usuario y el ID de la película son requeridos' });
+    }
+  
+    try {
+      // Obtener una conexión de la pool
+      const connection = await pool.promise().getConnection();
+  
+      // Consulta para insertar la película favorita
+      const query = 'INSERT INTO usuario_pendientes (nom_usuario, pelicula_id) VALUES (?, ?)';
+      await connection.execute(query, [nom_usuario, pelicula_id]);
+  
+      // Liberar la conexión
+      connection.release();
+  
+      // Enviar una respuesta exitosa
+      res.status(201).json({ message: 'Película pendiente agregada exitosamente' });
+    } catch (error) {
+      console.error('Error agregando película pendiente:', error);
+      res.status(500).json({ error: 'Error al agregar la película pendiente' });
+    }
+  };
+
+  export const obtenerFavoritas = async (req, res) => {
+    const { nom_usuario } = req.params;
+  
+    // Validar que el nom_usuario esté presente
+    if (!nom_usuario) {
+      return res.status(400).json({ error: 'El nombre de usuario es requerido' });
+    }
+  
+    try {
+      // Obtener una conexión de la pool
+      const connection = await pool.promise().getConnection();
+  
+      // Consulta para obtener los IDs de las películas favoritas
+      const query = 'SELECT pelicula_id FROM usuario_favoritas WHERE nom_usuario = ?';
+      const [rows] = await connection.execute(query, [nom_usuario]);
+  
+      // Liberar la conexión
+      connection.release();
+  
+      // Si no se encuentran películas favoritas, devolver un mensaje adecuado
+      if (rows.length === 0) {
+        return res.status(404).json({ message: 'No se encontraron películas favoritas para este usuario' });
+      }
+  
+      // Extraer los IDs de las películas favoritas
+      const peliculaIds = rows.map(row => row.pelicula_id);
+  
+      // Enviar la lista de IDs de películas favoritas como respuesta JSON
+      res.status(200).json({ favoritas: peliculaIds });
+    } catch (error) {
+      console.error('Error obteniendo películas favoritas:', error);
+      res.status(500).json({ error: 'Error al obtener las películas favoritas' });
+    }
+  };
+
+  export const obtenerPendientes = async (req, res) => {
+    const { nom_usuario } = req.params;
+  
+    // Validar que el nom_usuario esté presente
+    if (!nom_usuario) {
+      return res.status(400).json({ error: 'El nombre de usuario es requerido' });
+    }
+  
+    try {
+      // Obtener una conexión de la pool
+      const connection = await pool.promise().getConnection();
+  
+      // Consulta para obtener los IDs de las películas favoritas
+      const query = 'SELECT pelicula_id FROM usuario_pendientes WHERE nom_usuario = ?';
+      const [rows] = await connection.execute(query, [nom_usuario]);
+  
+      // Liberar la conexión
+      connection.release();
+  
+      // Si no se encuentran películas favoritas, devolver un mensaje adecuado
+      if (rows.length === 0) {
+        return res.status(404).json({ message: 'No se encontraron películas pendientes para este usuario' });
+      }
+  
+      // Extraer los IDs de las películas favoritas
+      const peliculaIds = rows.map(row => row.pelicula_id);
+  
+      // Enviar la lista de IDs de películas favoritas como respuesta JSON
+      res.status(200).json({ pendientes: peliculaIds });
+    } catch (error) {
+      console.error('Error obteniendo películas pendientes:', error);
+      res.status(500).json({ error: 'Error al obtener las películas pendientes' });
+    }
+  };
+
+  export const obtenerUltimaFavorita = async (req, res) => {
+    const { nom_usuario } = req.params;
+
+    try {
+      const connection = await pool.promise().getConnection();
+
+        
+      const query = 'SELECT pelicula_id FROM usuario_favoritas WHERE nom_usuario = ? ORDER BY id DESC LIMIT 1'
+      const [rows] = await connection.execute(query, [nom_usuario]);
+
+      connection.release();
+
+        if (rows.length === 0) {
+            res.status(404).json({ message: 'No se encontraron películas favoritas para este usuario.' });
+        } else {
+            res.json({ ultimaFavorita: rows[0].pelicula_id });
+        }
+    } catch (error) {
+        console.error('Error obteniendo la última película favorita:', error);
+        res.status(500).json({ message: 'Error obteniendo la última película favorita.' });
+    }
+};
+
+export const eliminarFavorita = async (req, res) => {
+  const { pelicula_id } = req.params;
+
+  try {
+    const connection = await pool.promise().getConnection();
+    
+    const query = 'DELETE FROM usuario_favoritas WHERE pelicula_id = ?';
+    const [result] = await connection.execute(query, [pelicula_id]);
+
+    connection.release();
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Película no encontrada' });
+    }
+
+    res.status(200).json({ message: 'Película eliminada exitosamente' });
+  } catch (error) {
+    console.error('Error eliminando la película favorita:', error);
+    res.status(500).json({ message: 'Error eliminando la película favorita' });
+  }
+};
