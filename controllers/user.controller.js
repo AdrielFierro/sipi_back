@@ -268,3 +268,25 @@ export const eliminarFavorita = async (req, res) => {
     res.status(500).json({ message: 'Error eliminando la película favorita' });
   }
 };
+
+export const eliminarPendiente = async (req, res) => {
+  const { pelicula_id } = req.params;
+
+  try {
+    const connection = await pool.promise().getConnection();
+    
+    const query = 'DELETE FROM usuario_pendientes WHERE pelicula_id = ?';
+    const [result] = await connection.execute(query, [pelicula_id]);
+
+    connection.release();
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Película no encontrada' });
+    }
+
+    res.status(200).json({ message: 'Película eliminada exitosamente' });
+  } catch (error) {
+    console.error('Error eliminando la película pendiente:', error);
+    res.status(500).json({ message: 'Error eliminando la película pendiente' });
+  }
+};

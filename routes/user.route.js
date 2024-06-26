@@ -1,5 +1,5 @@
 import { Router} from "express"; 
-import { crearUsuario, iniciarSesion, plataformasUsuario, agregarFavorita, agregarPendiente, obtenerFavoritas, obtenerPendientes, obtenerUltimaFavorita, eliminarFavorita} from "../controllers/user.controller.js";
+import { crearUsuario, iniciarSesion, plataformasUsuario, agregarFavorita, agregarPendiente, obtenerFavoritas, obtenerPendientes, obtenerUltimaFavorita, eliminarFavorita, eliminarPendiente} from "../controllers/user.controller.js";
 
 const router = Router()
 
@@ -12,6 +12,7 @@ router.get("/favoritas/:nom_usuario", obtenerFavoritas) //Obtener favoritas del 
 router.get("/pendientes/:nom_usuario", obtenerPendientes) //Obtener pendientes del usuario
 router.get("/ultimaFavorita/:nom_usuario", obtenerUltimaFavorita) //Obtener película favorita agregada más recientemente del usuario
 router.delete("/favorita/:pelicula_id", eliminarFavorita) //Eliminar película favorita
+router.delete("/pendiente/:pelicula_id", eliminarPendiente) //Eliminar película favorita
 
 export default router
 
