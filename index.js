@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { json } from 'express';
 import userRouter from "./routes/user.route.js";
+import gruposRouter from "./routes/grupos.route.js"
 
 const app = express();
 const port = 8080;
@@ -18,6 +19,7 @@ app.use(cors({
 
 // Rutas
 app.use("/user", userRouter);
+app.use("/grupos", gruposRouter);
 
 app.get('/', (req, res) => {
     res.send('¡Hola, mundo!');
