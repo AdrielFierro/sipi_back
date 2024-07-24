@@ -10,9 +10,9 @@ const port = process.env.PORT || 8080;
 // Middleware para parsear el cuerpo de las solicitudes como JSON
 app.use(json());
 
-// Configurar CORS para permitir todas las solicitudes desde http://localhost:3000
+
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'https://movie-tracker-kappa.vercel.app/',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
@@ -27,5 +27,5 @@ app.get('/', (req, res) => {
 
 // Iniciar el servidor
 app.listen(port, () => {
-    console.log(`Servidor escuchando en http://localhost:${port}`);
+    console.log(`Servidor escuchando en ${port}`);
 });
