@@ -5,6 +5,7 @@ const pool = createPool({
     host: 'monorail.proxy.rlwy.net',
     user: 'root',
     password: 'WulPwaHlCXYKpguTbXZXNaUXqJVeSMYe',
+    port: 56881,
     database: 'webmovies',
     waitForConnections: true,
     connectionLimit: 10, // número máximo de conexiones en la pool
