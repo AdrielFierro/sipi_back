@@ -12,10 +12,12 @@ app.use(json());
 
 
 app.use(cors({
-    origin: 'https://sipi-back-7dkp.onrender.com',
+    origin: 'https://sipi.onrender.com/',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+
+app.options('*', cors());
 
 // Rutas
 app.use("/user", userRouter);
