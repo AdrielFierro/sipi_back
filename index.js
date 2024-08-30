@@ -13,7 +13,7 @@ app.use(json());
 
 app.use(cors({
     origin: 'https://sipi.onrender.com/',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE','OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
