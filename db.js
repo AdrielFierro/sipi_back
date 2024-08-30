@@ -5,7 +5,7 @@ const pool = createPool({
     host: 'junction.proxy.rlwy.net',
     user: 'root',
     password: 'LwYsqpoMCffQwcpZTOHfTwUYLdfJUaJW',
-    port: 3306,
+    port: 19393,
     database: 'railway',
     waitForConnections: true,
     connectionLimit: 10, // número máximo de conexiones en la pool
