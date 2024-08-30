@@ -2,11 +2,11 @@ import { createPool } from 'mysql2';
 
 // Crear la pool de conexiones a la base de datos
 const pool = createPool({
-    host: 'junction.proxy.rlwy.net',
+    host: 'monorail.proxy.rlwy.net',
     user: 'root',
-    password: 'LwYsqpoMCffQwcpZTOHfTwUYLdfJUaJW',
-    port: 19393,
-    database: 'railway',
+    password: 'WulPwaHlCXYKpguTbXZXNaUXqJVeSMYe',
+    port: 56881,
+    database: 'webmovies',
     waitForConnections: true,
     connectionLimit: 10, // número máximo de conexiones en la pool
     queueLimit: 0 // ilimitado número de conexiones en la cola

@@ -11,21 +11,15 @@ const port = process.env.PORT || 8080;
 app.use(json());
 
 
-app.use(cors(
-    // {
-    // // origin: 'https://movie-tracker-kappa.vercel.app',
-    // origin: 'https://sipi-back-anbc.onrender.com',
-    // methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    // allowedHeaders: ['Content-Type', 'Authorization'],}
-));
+app.use(cors({
+    origin: 'https://movie-tracker-kappa.vercel.app',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
 // Rutas
 app.use("/user", userRouter);
 app.use("/grupos", gruposRouter);
-
-app.post('/user/login', (req, res) => {
-    res.send('CORS disabled');
-  });
 
 app.get('/', (req, res) => {
     res.send('¡Hola, mundo!');
