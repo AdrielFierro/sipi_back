@@ -13,7 +13,7 @@ app.use(json());
 
 app.use(cors({
     // origin: 'https://movie-tracker-kappa.vercel.app',
-    origin: 'https://sipi-back-1163.onrender.com',
+    origin: 'https://sipi-back-anbc.onrender.com',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
